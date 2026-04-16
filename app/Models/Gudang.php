@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Barang extends Model
+class Gudang extends Model
 {
     use HasFactory;
 
+    // Ini kuncinya! Ngasih izin buat kolom-kolom ini diisi
     protected $fillable = [
-        'kode_barang',
-        'nama_barang',
-        'stok',
-        'harga'
-
-     ];
+        'nama_gudang',
+        'lokasi',
+        'kapasitas'
+    ];
 }
