@@ -10,13 +10,13 @@ class BarangController extends Controller
     // menampilkan semua barang
     public function index()
     {
-        return response()->json(Barang::all());
+       return response()->json(Barang::with(['supplier','gudang'])->get());
     }
 
     // menampilkan 1 barang
     public function show($id)
     {
-        $barang = Barang::find($id);
+        $barang = Barang::with(['supplier','gudang'])->find($id);
 
         if(!$barang){
             return response()->json(['message' => 'Barang tidak ditemukan'], 404);
@@ -32,7 +32,9 @@ class BarangController extends Controller
             'kode_barang' => $request->kode_barang,
             'nama_barang' => $request->nama_barang,
             'stok' => $request->stok,
-            'harga' => $request->harga
+            'harga' => $request->harga,
+            'supplier_id' => $request->supplier_id,
+            'gudang_id' => $request->gudang_id
         ]);
 
         return response()->json($barang, 201);
