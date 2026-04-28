@@ -13,7 +13,18 @@ class Barang extends Model
         'kode_barang',
         'nama_barang',
         'stok',
-        'harga'
+        'harga',
+        'supplier_id',
+        'gudang_id'
+    ];
 
-     ];
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
+    public function gudang()
+    {
+        return $this->belongsTo(Gudang::class);
+    }
 }

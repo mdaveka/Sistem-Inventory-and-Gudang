@@ -24,7 +24,7 @@ class BarangMasukController extends Controller
     public function store(Request $request)
     {
         // Simpan data transaksi barang masuk
-        BarangMasuk::create($request->all());
+        BarangMasuk::create(array_merge($request->all(), ['tanggal_masuk' => now()]));
 
         $barang = Barang::find($request->barang_id);
         $barang->stok += $request->jumlah; 
