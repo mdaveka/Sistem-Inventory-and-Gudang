@@ -3,7 +3,7 @@
 @section('content')
     <h4 class="text-center mb-4">Register</h4>
 
-    <form method="POST" action="{{ url('/admin/register') }}">
+    <form method="POST" action="{{ url('/register') }}">
         @csrf
 
         <div class="mb-3">

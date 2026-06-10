@@ -31,7 +31,7 @@ class GudangController extends Controller
 
     public function show(Gudang $gudang)
     {
-        // Kosongin dulu
+        // 
     }
 
     public function edit(Gudang $gudang)

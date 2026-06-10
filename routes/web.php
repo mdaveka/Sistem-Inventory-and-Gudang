@@ -20,3 +20,11 @@ Route::resource('barang-masuk', BarangMasukController::class);
 use App\Http\Controllers\BarangKeluarController;
 
 Route::resource('barang-keluar', BarangKeluarController::class);
+
+Route::get('/login', function () {
+    return view('admin.auth.login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('admin.auth.register');
+})->name('register');

@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangMasukController;
 use App\Http\Controllers\BarangKeluarController;
 
+// Modul 2
 Route::apiResource('barangs', App\Http\Controllers\BarangController::class);
 Route::apiResource('suppliers', App\Http\Controllers\SupplierController::class);
 Route::apiResource('gudangs', App\Http\Controllers\GudangController::class);

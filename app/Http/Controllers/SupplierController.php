@@ -34,7 +34,7 @@ class SupplierController extends Controller
 
     public function show(Supplier $supplier)
     {
-        // Ini biarin kosong dulu (biasanya buat halaman detail)
+        //
     }
 
     public function edit(Supplier $supplier)

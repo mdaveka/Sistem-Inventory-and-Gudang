@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
     <h4 class="text-center mb-4">Login</h4>
- ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 
     <form method="POST" action="{{ url('/admin/login') }}">
         @csrf
 
@@ -28,7 +28,5 @@
     <a href="{{ url('/admin/register') }}" class="d-block text-center mt-3">
         Belum punya akun? Register
     </a>
-    <a href="{{ route('register') }}" class="d-block text-center mt-3">
-        Belum punya akun? Register
-    </a>
+   
 @endsection
