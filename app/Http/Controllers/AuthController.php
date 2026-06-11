@@ -52,8 +52,10 @@ class AuthController extends Controller
 
         
         $this->sendWelcomeEmail($user);
-
-        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan cek email Anda.');
+        return response()->json([
+            'message' => 'Registrasi berhasil! Silakan cek email Anda.',
+            'user' => $user,
+        ], 201);
     }
 
     protected function sendWelcomeEmail($user)

@@ -24,22 +24,31 @@ class BarangKeluarController extends Controller
 
     public function store(Request $request)
     {
-       
-        $barang = Barang::find($request->barang_id);
+        $data = $request->validate([
+            'barang_id' => 'required|integer|exists:barangs,id',
+            'jumlah' => 'required|integer|min:1',
+            'keterangan' => 'nullable|string',
+        ]);
 
-        
-        if ($request->jumlah > $barang->stok) {
-           
-            return redirect()->back()->with('error', 'Gagal! Stok tidak cukup. Sisa stok saat ini: ' . $barang->stok);
+        $barang = Barang::find($data['barang_id']);
+
+        if ($data['jumlah'] > $barang->stok) {
+            return response()->json([
+                'message' => 'Gagal! Stok tidak cukup.',
+                'sisa_stok' => $barang->stok,
+            ], 422);
         }
 
-     
-        BarangKeluar::create($request->all());
+        $barangKeluar = BarangKeluar::create($data);
 
-        //Kurangi stok di master barang
-        $barang->stok -= $request->jumlah;
+        // Kurangi stok di master barang
+        $barang->stok -= $data['jumlah'];
         $barang->save();
 
-        return redirect('/barang')->with('success', 'Barang berhasil dikeluarkan dan stok berkurang!');
+        return response()->json([
+            'message' => 'Barang berhasil dikeluarkan dan stok berkurang!',
+            'data' => $barangKeluar,
+            'barang' => $barang,
+        ]);
     }
 }

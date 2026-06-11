@@ -13,33 +13,36 @@ class MutasiGudangController extends Controller
     {
         // Mengambil semua data mutasi
         $mutasis = MutasiGudang::all();
-        return view('mutasi.index', compact('mutasis'));
+        return response()->json($mutasis);
     }
 
     public function create()
     {
-        
         $barangs = Barang::all();
         $gudangs = Gudang::all();
-        return view('mutasi.create', compact('barangs', 'gudangs'));
+        return response()->json([
+            'barangs' => $barangs,
+            'gudangs' => $gudangs,
+        ]);
     }
 
     public function store(Request $request)
     {
-        MutasiGudang::create([
-            'barang_id'        => $request->barang_id,
-            'gudang_asal_id'   => $request->gudang_asal_id,
-            'gudang_tujuan_id' => $request->gudang_tujuan_id,
-            'jumlah'           => $request->jumlah,
-            'tanggal_mutasi'   => $request->tanggal_mutasi,
+        $data = $request->validate([
+            'barang_id' => 'required|integer|exists:barangs,id',
+            'gudang_asal_id' => 'required|integer|exists:gudangs,id',
+            'gudang_tujuan_id' => 'required|integer|exists:gudangs,id',
+            'jumlah' => 'required|integer|min:1',
+            'tanggal_mutasi' => 'nullable|date',
         ]);
 
-        return redirect()->route('mutasi.index');
+        $mutasi = MutasiGudang::create($data);
+        return response()->json($mutasi, 201);
     }
 
     public function show(MutasiGudang $mutasi)
     {
-        //
+        return response()->json($mutasi);
     }
 
     public function edit($id)
@@ -47,28 +50,32 @@ class MutasiGudangController extends Controller
         $mutasi = MutasiGudang::findOrFail($id);
         $barangs = Barang::all();
         $gudangs = Gudang::all();
-        return view('mutasi.edit', compact('mutasi', 'barangs', 'gudangs'));
+        return response()->json([
+            'mutasi' => $mutasi,
+            'barangs' => $barangs,
+            'gudangs' => $gudangs,
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $mutasi = MutasiGudang::findOrFail($id);
-        $mutasi->update([
-            'barang_id'        => $request->barang_id,
-            'gudang_asal_id'   => $request->gudang_asal_id,
-            'gudang_tujuan_id' => $request->gudang_tujuan_id,
-            'jumlah'           => $request->jumlah,
-            'tanggal_mutasi'   => $request->tanggal_mutasi,
+        $data = $request->validate([
+            'barang_id' => 'sometimes|required|integer|exists:barangs,id',
+            'gudang_asal_id' => 'sometimes|required|integer|exists:gudangs,id',
+            'gudang_tujuan_id' => 'sometimes|required|integer|exists:gudangs,id',
+            'jumlah' => 'sometimes|required|integer|min:1',
+            'tanggal_mutasi' => 'nullable|date',
         ]);
 
-        return redirect()->route('mutasi.index');
+        $mutasi->update($data);
+        return response()->json($mutasi);
     }
 
     public function destroy($id)
     {
         $mutasi = MutasiGudang::findOrFail($id);
         $mutasi->delete();
-
-        return redirect()->route('mutasi.index');
+        return response()->json(['message' => 'Mutasi berhasil dihapus']);
     }
 }

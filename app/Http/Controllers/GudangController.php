@@ -10,50 +10,51 @@ class GudangController extends Controller
     public function index()
     {
         $gudangs = Gudang::all();
-        return view('gudang.index', compact('gudangs'));
+        return response()->json($gudangs);
     }
 
     public function create()
     {
-        return view('gudang.create');
+        return response()->json(['message' => 'Not applicable for API'], 204);
     }
 
     public function store(Request $request)
     {
-        Gudang::create([
-            'nama_gudang' => $request->nama_gudang,
-            'lokasi'      => $request->lokasi,
-            'kapasitas'   => $request->kapasitas,
+        $data = $request->validate([
+            'nama_gudang' => 'required|string|max:255',
+            'lokasi' => 'nullable|string',
+            'kapasitas' => 'nullable|integer',
         ]);
 
-        return redirect()->route('gudang.index');
+        $gudang = Gudang::create($data);
+        return response()->json($gudang, 201);
     }
 
     public function show(Gudang $gudang)
     {
-        // 
+        return response()->json($gudang);
     }
 
     public function edit(Gudang $gudang)
     {
-        return view('gudang.edit', compact('gudang'));
+        return response()->json($gudang);
     }
 
     public function update(Request $request, Gudang $gudang)
     {
-        $gudang->update([
-            'nama_gudang' => $request->nama_gudang,
-            'lokasi'      => $request->lokasi,
-            'kapasitas'   => $request->kapasitas,
+        $data = $request->validate([
+            'nama_gudang' => 'sometimes|required|string|max:255',
+            'lokasi' => 'nullable|string',
+            'kapasitas' => 'nullable|integer',
         ]);
 
-        return redirect()->route('gudang.index');
+        $gudang->update($data);
+        return response()->json($gudang);
     }
 
     public function destroy(Gudang $gudang)
     {
         $gudang->delete();
-
-        return redirect()->route('gudang.index');
+        return response()->json(['message' => 'Gudang berhasil dihapus']);
     }
 }

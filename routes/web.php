@@ -10,6 +10,8 @@ use App\Http\Controllers\AdminController\AuthController as AdminAuthController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;
+
 Route::get('/', function () {
     $lowStockLimit = 5;
     $lowStockItems = Barang::query()
@@ -75,3 +77,12 @@ Route::resource('supplier', SupplierController::class);
 Route::resource('gudang', GudangController::class);
 Route::resource('barang-masuk', BarangMasukController::class);
 Route::resource('barang-keluar', BarangKeluarController::class);
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('login', [AdminAuthController::class, 'showLogin'])->name('login');
+    Route::post('login', [AdminAuthController::class, 'login'])->name('login.submit');
+    Route::get('register', [AdminAuthController::class, 'showRegister'])->name('register');
+    Route::post('register', [AdminAuthController::class, 'register'])->name('register.submit');
+    Route::get('dashboard', [AdminAuthController::class, 'dashboard'])->name('dashboard');
+    Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
+});
