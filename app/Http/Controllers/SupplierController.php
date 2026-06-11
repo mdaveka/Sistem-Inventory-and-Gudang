@@ -7,59 +7,38 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    // 1. Menampilkan Halaman
     public function index()
     {
-        // Menampilkan semua data
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::all(); 
         return view('supplier.index', compact('suppliers'));
     }
 
-    public function create()
-    {
-        // Menampilkan form tambah data
-        return view('supplier.create');
-    }
-
+    // 2. Menyimpan Data Baru
     public function store(Request $request)
     {
-        // Menyimpan data baru ke database
-        Supplier::create([
-            'nama_supplier' => $request->nama_supplier,
-            'no_telepon'    => $request->no_telepon,
-            'alamat'        => $request->alamat,
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
         ]);
 
-        return redirect()->route('supplier.index');
+        Supplier::create($request->all());
+        return redirect()->route('supplier.index')->with('success', 'Supplier berhasil ditambahkan!');
     }
 
-    public function show(Supplier $supplier)
+    // 3. Update Data
+    public function update(Request $request, $id)
     {
-        //
+        $supplier = Supplier::findOrFail($id);
+        $supplier->update($request->all());
+        return redirect()->route('supplier.index')->with('success', 'Data Supplier berhasil diperbarui!');
     }
 
-    public function edit(Supplier $supplier)
+    // 4. Hapus Data
+    public function destroy($id)
     {
-        // Menampilkan form edit dengan data lama
-        return view('supplier.edit', compact('supplier'));
-    }
-
-    public function update(Request $request, Supplier $supplier)
-    {
-        // Menyimpan perubahan data ke database
-        $supplier->update([
-            'nama_supplier' => $request->nama_supplier,
-            'no_telepon'    => $request->no_telepon,
-            'alamat'        => $request->alamat,
-        ]);
-
-        return redirect()->route('supplier.index');
-    }
-
-    public function destroy(Supplier $supplier)
-    {
-        // Menghapus data dari database
-        $supplier->delete();
-
-        return redirect()->route('supplier.index');
+        Supplier::findOrFail($id)->delete();
+        return redirect()->route('supplier.index')->with('success', 'Supplier berhasil dihapus!');
     }
 }

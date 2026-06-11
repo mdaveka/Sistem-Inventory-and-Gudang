@@ -5,6 +5,9 @@ use App\Models\Barang;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\BarangMasukController;
+use App\Http\Controllers\BarangKeluarController;
+use App\Http\Controllers\MutasiGudangController; 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -17,10 +20,8 @@ Route::get('/barang', function () {
 Route::resource('supplier', SupplierController::class);
 Route::resource('gudang', GudangController::class);
 Route::resource('barang-masuk', BarangMasukController::class);
-use App\Http\Controllers\BarangKeluarController;
-
 Route::resource('barang-keluar', BarangKeluarController::class);
-
+Route::resource('mutasi', MutasiGudangController::class); 
 Route::get('/login', function () {
     return view('admin.auth.login');
 })->name('login');
