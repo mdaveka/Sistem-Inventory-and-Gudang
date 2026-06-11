@@ -5,7 +5,7 @@
 
     <p>Selamat datang, {{ $user->name }}</p>
 
-    <form method="POST" action="{{ route('logout') }}">
+    <form method="POST" action="{{ route('admin.logout') }}">
         @csrf
         <button type="submit">Logout</button>
     </form>
