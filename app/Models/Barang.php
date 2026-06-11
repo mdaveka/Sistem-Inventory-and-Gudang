@@ -15,7 +15,7 @@ class Barang extends Model
         'stok',
         'harga',
         'supplier_id',
-        'gudang_id'
+        'gudang_id',
     ];
 
     public function supplier()

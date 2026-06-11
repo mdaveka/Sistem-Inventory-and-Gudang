@@ -9,4 +9,9 @@ class BarangMasuk extends Model
 {
     use HasFactory;
     protected $fillable = ['barang_id', 'supplier_id', 'gudang_id', 'jumlah', 'tanggal_masuk'];
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class);
+    }
 }

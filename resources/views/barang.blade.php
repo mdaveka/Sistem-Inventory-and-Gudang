@@ -1,60 +1,51 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Data Barang</title>
+@extends('layouts.app')
 
-<style>
-body{
-font-family:Arial;
-background:#f4f6f9;
-padding:40px;
-}
+@section('title', 'Data Barang')
+@section('page_title', 'Data Barang')
+@section('page_subtitle', 'Daftar master barang dan stok yang tersedia.')
 
-table{
-width:80%;
-margin:auto;
-border-collapse:collapse;
-background:white;
-}
+@section('page_actions')
+<div class="d-flex flex-wrap gap-2">
+    <a href="{{ route('barang-masuk.create') }}" class="btn btn-primary">+ Barang Masuk</a>
+    <a href="{{ route('barang-keluar.create') }}" class="btn btn-outline-danger">- Barang Keluar</a>
+</div>
+@endsection
 
-th,td{
-padding:10px;
-border:1px solid #ddd;
-text-align:center;
-}
-
-th{
-background:#3490dc;
-color:white;
-}
-</style>
-
-</head>
-
-<body>
-
-<h2 align="center">Data Barang</h2>
-
-<table>
-<tr>
-<th>ID</th>
-<th>Kode Barang</th>
-<th>Nama Barang</th>
-<th>Stok</th>
-<th>Harga</th>
-</tr>
-
-@foreach($barang as $b)
-<tr>
-<td>{{ $b->id }}</td>
-<td>{{ $b->kode_barang }}</td>
-<td>{{ $b->nama_barang }}</td>
-<td>{{ $b->stok }}</td>
-<td>{{ $b->harga }}</td>
-</tr>
-@endforeach
-
-</table>
-
-</body>
-</html>
+@section('content')
+<div class="card table-card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Kode Barang</th>
+                        <th>Nama Barang</th>
+                        <th>Stok</th>
+                        <th>Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($barang as $b)
+                        <tr>
+                            <td class="ps-4">{{ $b->id }}</td>
+                            <td><span class="badge badge-soft rounded-pill">{{ $b->kode_barang }}</span></td>
+                            <td class="fw-semibold">{{ $b->nama_barang }}</td>
+                            <td>
+                                <span class="badge {{ $b->stok > 0 ? 'text-bg-success' : 'text-bg-danger' }} rounded-pill">
+                                    {{ $b->stok }} stok
+                                </span>
+                            </td>
+                            <td>Rp {{ number_format($b->harga, 0, ',', '.') }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="empty-state">Belum ada data barang.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection
