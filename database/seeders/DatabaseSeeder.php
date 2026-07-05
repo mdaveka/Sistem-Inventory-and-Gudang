@@ -2,24 +2,35 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\{User, Supplier, Warehouse, Item};
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // 1. Akun Admin Utama
+        User::updateOrCreate(
+            ['email' => 'admin@test.com'],
+            ['name' => 'Admin Utama', 'password' => Hash::make('password'), 'role' => 'admin']
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // 2. Data Gudang (Warehouse)
+        $wh1 = Warehouse::updateOrCreate(['name' => 'Gudang Utama'], ['location' => 'Plesungan, Karanganyar']);
+        
+        // 3. Data Supplier
+        $sup1 = Supplier::updateOrCreate(['name' => 'PT. SIAP KANGMAS'], ['phone' => '081234567', 'address' => 'Solo']);
+
+        // 4. Data Barang (Items)
+        Item::updateOrCreate(
+            ['barcode' => 'BRX-001'],
+            [
+                'name' => 'T-SHIRT FEETED TEE BLACK',
+                'supplier_id' => $sup1->id,
+                'stock' => 17,
+                'min_stock' => 5
+            ]
+        );
     }
 }
